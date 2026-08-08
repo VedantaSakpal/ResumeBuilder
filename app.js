@@ -281,15 +281,67 @@
     saveToStorage();
   }
 
+  function isSectionComplete(stepIdx) {
+    const d = state.data;
+    switch (stepIdx) {
+      case 0: // Personal Info
+        return Boolean(
+          d.firstName && d.firstName.trim() &&
+          d.lastName && d.lastName.trim() &&
+          d.jobTitle && d.jobTitle.trim() &&
+          d.email && d.email.trim() &&
+          d.summary && d.summary.trim()
+        );
+      case 1: // Work Experience
+        return Boolean(
+          d.experience &&
+          d.experience.length > 0 &&
+          d.experience.every(e => e.role && e.role.trim() && e.company && e.company.trim())
+        );
+      case 2: // Education
+        return Boolean(
+          d.education &&
+          d.education.length > 0 &&
+          d.education.every(e => e.degree && e.degree.trim() && e.school && e.school.trim())
+        );
+      case 3: // Skills
+        return Boolean(
+          (d.techSkills && d.techSkills.length > 0) ||
+          (d.softSkills && d.softSkills.length > 0) ||
+          (d.languages && d.languages.some(l => l.name && l.name.trim()))
+        );
+      case 4: // Projects
+        return Boolean(
+          d.projects &&
+          d.projects.length > 0 &&
+          d.projects.every(p => p.title && p.title.trim())
+        );
+      case 5: // Certifications
+        return Boolean(
+          d.certifications &&
+          d.certifications.length > 0 &&
+          d.certifications.every(c => c.name && c.name.trim() && c.issuer && c.issuer.trim())
+        );
+      default:
+        return false;
+    }
+  }
+
   function updateProgress() {
     const total = formSteps.length;
-    const pct = Math.round(((state.currentStep + 1) / total) * 100);
-    progressFill.style.width = pct + '%';
-    progressPct.textContent = pct + '%';
+    let completedCount = 0;
 
     navSteps.forEach((n, i) => {
-      n.classList.toggle('completed', i < state.currentStep);
+      const isComplete = isSectionComplete(i);
+      n.classList.toggle('completed', isComplete);
+      if (isComplete) {
+        completedCount++;
+      }
     });
+
+    const pct = Math.round((completedCount / total) * 100);
+    progressFill.style.width = pct + '%';
+    progressPct.textContent = pct + '%';
   }
 
   /* ============================================================
@@ -402,6 +454,7 @@
         state.data[el.dataset.field] = el.value;
         updatePreview();
         saveToStorage();
+        updateProgress();
       });
     });
 
@@ -442,6 +495,7 @@
       photoPreview.innerHTML = `<img src="${ev.target.result}" alt="profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`;
       updatePreview();
       saveToStorage();
+      updateProgress();
     };
     reader.readAsDataURL(file);
   }
@@ -484,6 +538,7 @@
       renderTags();
       updatePreview();
       saveToStorage();
+      updateProgress();
     });
 
     function addTag() {
@@ -495,6 +550,7 @@
         renderTags();
         updatePreview();
         saveToStorage();
+        updateProgress();
       }
       input.value = '';
     }
@@ -506,6 +562,7 @@
         renderTags();
         updatePreview();
         saveToStorage();
+        updateProgress();
       }
     });
 
@@ -548,6 +605,7 @@
     renderEntryList(key);
     updatePreview();
     saveToStorage();
+    updateProgress();
   }
 
   function removeEntry(key, idx) {
@@ -555,6 +613,7 @@
     renderEntryList(key);
     updatePreview();
     saveToStorage();
+    updateProgress();
   }
 
   function renderAllDynamicLists() {
@@ -596,6 +655,7 @@
         updateEntryCardTitle(card, key, idx);
         updatePreview();
         saveToStorage();
+        updateProgress();
       });
       el.addEventListener('change', () => {
         if (el.type === 'checkbox') {
@@ -604,6 +664,7 @@
           if (endDateInput) endDateInput.disabled = el.checked;
           updatePreview();
           saveToStorage();
+          updateProgress();
         }
       });
     });
@@ -615,15 +676,17 @@
     if (!titleEl) return;
     const item = state.data[key][idx];
     if (key === 'experience') {
-      titleEl.textContent = item.role || 'New Position';
-      if (subtitleEl) subtitleEl.textContent = item.company || '';
+      titleEl.textContent = `Position #${idx + 1}`;
+      if (subtitleEl) subtitleEl.textContent = item.role ? `${item.role}${item.company ? ' at ' + item.company : ''}` : '';
     } else if (key === 'education') {
-      titleEl.textContent = item.degree || 'New Degree';
-      if (subtitleEl) subtitleEl.textContent = item.school || '';
+      titleEl.textContent = `Education #${idx + 1}`;
+      if (subtitleEl) subtitleEl.textContent = item.degree ? `${item.degree}${item.school ? ' · ' + item.school : ''}` : '';
     } else if (key === 'projects') {
-      titleEl.textContent = item.title || 'New Project';
+      titleEl.textContent = `Project #${idx + 1}`;
+      if (subtitleEl) subtitleEl.textContent = item.title || '';
     } else if (key === 'certifications') {
-      titleEl.textContent = item.name || 'New Certification';
+      titleEl.textContent = `Certification #${idx + 1}`;
+      if (subtitleEl) subtitleEl.textContent = item.name ? `${item.name}${item.issuer ? ' · ' + item.issuer : ''}` : '';
     }
   }
 
@@ -634,8 +697,8 @@
 <div class="entry-card" data-key="${key}" data-idx="${idx}">
   <div class="entry-card-header">
     <div>
-      <div class="entry-card-title">${escHtml(item.role || 'New Position')}</div>
-      <div class="entry-card-subtitle">${escHtml(item.company || '')}</div>
+      <div class="entry-card-title">Position #${idx + 1}</div>
+      <div class="entry-card-subtitle">${escHtml(item.role ? `${item.role}${item.company ? ' at ' + item.company : ''}` : '')}</div>
     </div>
     <div class="entry-card-actions">
       <button class="btn-icon-remove" title="Remove" aria-label="Remove entry">
@@ -682,8 +745,8 @@
 <div class="entry-card" data-key="${key}" data-idx="${idx}">
   <div class="entry-card-header">
     <div>
-      <div class="entry-card-title">${escHtml(item.degree || 'New Degree')}</div>
-      <div class="entry-card-subtitle">${escHtml(item.school || '')}</div>
+      <div class="entry-card-title">Education #${idx + 1}</div>
+      <div class="entry-card-subtitle">${escHtml(item.degree ? `${item.degree}${item.school ? ' · ' + item.school : ''}` : '')}</div>
     </div>
     <div class="entry-card-actions">
       <button class="btn-icon-remove" title="Remove" aria-label="Remove entry">
@@ -717,7 +780,8 @@
 <div class="entry-card" data-key="${key}" data-idx="${idx}">
   <div class="entry-card-header">
     <div>
-      <div class="entry-card-title">${escHtml(item.title || 'New Project')}</div>
+      <div class="entry-card-title">Project #${idx + 1}</div>
+      <div class="entry-card-subtitle">${escHtml(item.title || '')}</div>
     </div>
     <div class="entry-card-actions">
       <button class="btn-icon-remove" title="Remove" aria-label="Remove entry">
@@ -751,8 +815,8 @@
 <div class="entry-card" data-key="${key}" data-idx="${idx}">
   <div class="entry-card-header">
     <div>
-      <div class="entry-card-title">${escHtml(item.name || 'New Certification')}</div>
-      <div class="entry-card-subtitle">${escHtml(item.issuer || '')}</div>
+      <div class="entry-card-title">Certification #${idx + 1}</div>
+      <div class="entry-card-subtitle">${escHtml(item.name ? `${item.name}${item.issuer ? ' · ' + item.issuer : ''}` : '')}</div>
     </div>
     <div class="entry-card-actions">
       <button class="btn-icon-remove" title="Remove" aria-label="Remove entry">
@@ -784,6 +848,7 @@
     state.data.languages.push({ name: '', level: 'Fluent' });
     renderLanguageList();
     saveToStorage();
+    updateProgress();
   }
 
   function renderLanguageList() {
@@ -812,17 +877,20 @@
         state.data.languages[idx].name = input.value;
         updatePreview();
         saveToStorage();
+        updateProgress();
       });
       select.addEventListener('change', () => {
         state.data.languages[idx].level = select.value;
         updatePreview();
         saveToStorage();
+        updateProgress();
       });
       removeBtn.addEventListener('click', () => {
         state.data.languages.splice(idx, 1);
         renderLanguageList();
         updatePreview();
         saveToStorage();
+        updateProgress();
       });
 
       list.appendChild(row);

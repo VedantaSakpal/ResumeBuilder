@@ -16,11 +16,11 @@ window.ResumeTemplates = {
     const initials = ((data.firstName || '')[0] || '') + ((data.lastName || '')[0] || '');
 
     const contactItems = [
-      data.email    && `<div class="m-contact-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>${data.email}</div>`,
-      data.phone    && `<div class="m-contact-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.61 4.38 2 2 0 0 1 3.58 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l1.02-.93a2 2 0 0 1 2.12-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>${data.phone}</div>`,
+      data.email && `<div class="m-contact-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>${data.email}</div>`,
+      data.phone && `<div class="m-contact-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.61 4.38 2 2 0 0 1 3.58 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l1.02-.93a2 2 0 0 1 2.12-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>${data.phone}</div>`,
       data.location && `<div class="m-contact-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${data.location}</div>`,
-      data.linkedin && `<div class="m-contact-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>${data.linkedin.replace('https://','')}</div>`,
-      data.website  && `<div class="m-contact-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>${data.website.replace('https://','')}</div>`,
+      data.linkedin && `<div class="m-contact-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>${data.linkedin.replace('https://', '')}</div>`,
+      data.website && `<div class="m-contact-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>${data.website.replace('https://', '')}</div>`,
     ].filter(Boolean).join('');
 
     const techSkills = (data.techSkills || []).map(s =>
@@ -45,7 +45,7 @@ window.ResumeTemplates = {
           </div>
           <div class="m-entry-date">${e.startDate || ''}${e.current ? ' – Present' : e.endDate ? ' – ' + e.endDate : ''}</div>
         </div>
-        ${e.description ? `<p class="m-entry-desc">${e.description.replace(/\n/g,'<br/>')}</p>` : ''}
+        ${e.description ? `<p class="m-entry-desc">${e.description.replace(/\n/g, '<br/>')}</p>` : ''}
       </div>`).join('');
 
     const education = (data.education || []).map(e => `
@@ -64,9 +64,9 @@ window.ResumeTemplates = {
       <div class="m-entry">
         <div class="m-entry-header">
           <div class="m-entry-title">${p.title || 'Project'}</div>
-          ${p.url ? `<a href="${p.url}" class="m-entry-date" style="color:#4fc3f7">${p.url.replace('https://','')}</a>` : ''}
+          ${p.url ? `<a href="${p.url}" class="m-entry-date" style="color:#4fc3f7">${p.url.replace('https://', '')}</a>` : ''}
         </div>
-        ${p.tech ? `<div class="m-tech-chips">${p.tech.split(',').map(t=>`<span>${t.trim()}</span>`).join('')}</div>` : ''}
+        ${p.tech ? `<div class="m-tech-chips">${p.tech.split(',').map(t => `<span>${t.trim()}</span>`).join('')}</div>` : ''}
         ${p.description ? `<p class="m-entry-desc">${p.description}</p>` : ''}
       </div>`).join('');
 
@@ -144,7 +144,7 @@ window.ResumeTemplates = {
           </div>
           <div class="cl-entry-date">${e.startDate || ''}${e.current ? ' – Present' : e.endDate ? ' – ' + e.endDate : ''}</div>
         </div>
-        ${e.description ? `<p class="cl-entry-desc">${e.description.replace(/\n/g,'<br/>')}</p>` : ''}
+        ${e.description ? `<p class="cl-entry-desc">${e.description.replace(/\n/g, '<br/>')}</p>` : ''}
       </div>`).join('');
 
     const education = (data.education || []).map(e => `
@@ -166,7 +166,7 @@ window.ResumeTemplates = {
       <div class="cl-entry">
         <div class="cl-entry-row">
           <div class="cl-entry-title">${p.title || 'Project'}${p.tech ? ` <span class="cl-tech">| ${p.tech}</span>` : ''}</div>
-          ${p.url ? `<a href="${p.url}" class="cl-entry-date">${p.url.replace('https://','')}</a>` : ''}
+          ${p.url ? `<a href="${p.url}" class="cl-entry-date">${p.url.replace('https://', '')}</a>` : ''}
         </div>
         ${p.description ? `<p class="cl-entry-desc">${p.description}</p>` : ''}
       </div>`).join('');
@@ -238,7 +238,7 @@ window.ResumeTemplates = {
         <div class="cr-entry-body">
           <div class="cr-entry-title">${e.role || 'Role'}</div>
           <div class="cr-entry-meta">${e.company || ''}${e.startDate ? ' · ' + e.startDate : ''}${e.current ? ' – Present' : e.endDate ? ' – ' + e.endDate : ''}</div>
-          ${e.description ? `<p class="cr-entry-desc">${e.description.replace(/\n/g,'<br/>')}</p>` : ''}
+          ${e.description ? `<p class="cr-entry-desc">${e.description.replace(/\n/g, '<br/>')}</p>` : ''}
         </div>
       </div>`).join('');
 
@@ -316,7 +316,7 @@ window.ResumeTemplates = {
         ${data.email ? `<span class="cr-header-contact">✉ ${data.email}</span>` : ''}
         ${data.phone ? `<span class="cr-header-contact">📞 ${data.phone}</span>` : ''}
         ${data.location ? `<span class="cr-header-contact">📍 ${data.location}</span>` : ''}
-        ${data.linkedin ? `<span class="cr-header-contact">in ${data.linkedin.replace('https://linkedin.com/in/','')}</span>` : ''}
+        ${data.linkedin ? `<span class="cr-header-contact">in ${data.linkedin.replace('https://linkedin.com/in/', '')}</span>` : ''}
       </div>
     </div>
   </header>
@@ -359,7 +359,7 @@ window.ResumeTemplates = {
           </div>
           <span class="mn-entry-date">${e.startDate || ''}${e.current ? ' – Present' : e.endDate ? ' – ' + e.endDate : ''}</span>
         </div>
-        ${e.description ? `<p class="mn-entry-desc">${e.description.replace(/\n/g,'<br/>')}</p>` : ''}
+        ${e.description ? `<p class="mn-entry-desc">${e.description.replace(/\n/g, '<br/>')}</p>` : ''}
       </div>`).join('');
 
     const education = (data.education || []).map(e => `
@@ -381,7 +381,7 @@ window.ResumeTemplates = {
       <div class="mn-entry">
         <div class="mn-entry-header">
           <span class="mn-entry-role">${p.title || 'Project'}</span>
-          ${p.url ? `<a href="${p.url}" class="mn-entry-date" style="font-style:normal">${p.url.replace('https://','')}</a>` : ''}
+          ${p.url ? `<a href="${p.url}" class="mn-entry-date" style="font-style:normal">${p.url.replace('https://', '')}</a>` : ''}
         </div>
         ${p.tech ? `<div class="mn-entry-tech">${p.tech}</div>` : ''}
         ${p.description ? `<p class="mn-entry-desc">${p.description}</p>` : ''}
