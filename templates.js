@@ -450,6 +450,201 @@ window.ResumeTemplates = {
   ${mnSection('Projects', projects)}
   ${certs ? mnSection('Certifications', certs) : ''}
 </div>`;
+  },
+
+  /* ============================================================
+     TEMPLATE 5: PROFESSIONAL
+     Formal, structured layout with a left sidebar for details
+     ============================================================ */
+  professional(data) {
+    const name = `${data.firstName || ''} ${data.lastName || ''}`.trim() || 'Your Name';
+    const photo = data.photo ? `<img src="${data.photo}" alt="profile" />` : '';
+
+    const contactItems = [
+      data.email,
+      data.phone,
+      data.location,
+      data.linkedin ? data.linkedin.replace('https://', '') : '',
+      data.website ? data.website.replace('https://', '') : ''
+    ].filter(Boolean).map(item => `<div class="pr-contact-item">${item}</div>`).join('');
+
+    const techSkills = (data.techSkills || []).map(s =>
+      `<div class="pr-skill-item">${s}</div>`).join('');
+    const softSkills = (data.softSkills || []).map(s =>
+      `<div class="pr-skill-item">${s}</div>`).join('');
+    const languages = (data.languages || []).map(l =>
+      `<div class="pr-lang-item">${l.name} - ${l.level}</div>`).join('');
+
+    const experience = (data.experience || []).map(e => `
+      <div class="pr-entry">
+        <div class="pr-entry-header">
+          <div class="pr-entry-title">${e.role || 'Role'}</div>
+          <div class="pr-entry-date">${e.startDate || ''}${e.current ? ' – Present' : e.endDate ? ' – ' + e.endDate : ''}</div>
+        </div>
+        <div class="pr-entry-org">${e.company || ''}</div>
+        ${e.description ? `<p class="pr-entry-desc">${e.description.replace(/\n/g, '<br/>')}</p>` : ''}
+      </div>`).join('');
+
+    const education = (data.education || []).map(e => `
+      <div class="pr-entry">
+        <div class="pr-entry-header">
+          <div class="pr-entry-title">${e.degree || 'Degree'}</div>
+          <div class="pr-entry-date">${e.year || ''}</div>
+        </div>
+        <div class="pr-entry-org">${e.school || ''}</div>
+        ${e.gpa ? `<div class="pr-entry-desc">GPA: ${e.gpa}</div>` : ''}
+      </div>`).join('');
+
+    const projects = (data.projects || []).map(p => `
+      <div class="pr-entry">
+        <div class="pr-entry-header">
+          <div class="pr-entry-title">${p.title || 'Project'}</div>
+        </div>
+        ${p.url ? `<a href="${p.url}" class="pr-entry-link">${p.url.replace('https://', '')}</a>` : ''}
+        ${p.tech ? `<div class="pr-entry-tech">${p.tech}</div>` : ''}
+        ${p.description ? `<p class="pr-entry-desc">${p.description}</p>` : ''}
+      </div>`).join('');
+
+    const certifications = (data.certifications || []).map(c => `
+      <div class="pr-cert">
+        <div class="pr-cert-name">${c.name || ''}</div>
+        <div class="pr-cert-meta">${c.issuer || ''} ${c.date ? '· ' + c.date : ''}</div>
+      </div>`).join('');
+
+    return `
+<style>
+  .prof-resume { display:flex; min-height:1123px; font-family:'Inter',sans-serif; font-size:12px; line-height:1.6; color:#333; background:#fff; }
+  .pr-sidebar { width:240px; background:#f8f9fa; padding:40px 25px; border-right:1px solid #e9ecef; flex-shrink:0; }
+  .pr-main { flex:1; padding:40px 35px; }
+  .pr-photo { width:120px; height:120px; border-radius:50%; overflow:hidden; margin:0 auto 25px; border:4px solid #fff; box-shadow:0 2px 10px rgba(0,0,0,0.1); background:#e9ecef; }
+  .pr-photo img { width:100%; height:100%; object-fit:cover; }
+  .pr-name { font-family:'Playfair Display',serif; font-size:32px; font-weight:700; color:#212529; line-height:1.2; margin-bottom:5px; border-bottom: 2px solid #212529; padding-bottom: 15px; }
+  .pr-job-title { font-size:14px; font-weight:500; color:#6c757d; text-transform:uppercase; letter-spacing:1px; margin-bottom:25px; }
+  .pr-section-title { font-family:'Playfair Display',serif; font-size:16px; font-weight:700; color:#212529; margin-bottom:15px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:1px solid #dee2e6; padding-bottom:5px; }
+  .pr-sidebar .pr-section-title { font-size:14px; border-bottom:none; margin-bottom:10px; color:#495057; }
+  .pr-summary { font-size:12px; color:#495057; line-height:1.8; margin-bottom:25px; }
+  .pr-contact-item, .pr-skill-item, .pr-lang-item { font-size:11.5px; color:#495057; margin-bottom:6px; word-break:break-all; }
+  .pr-sidebar-section { margin-bottom:25px; }
+  .pr-entry { margin-bottom:18px; }
+  .pr-entry-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:2px; }
+  .pr-entry-title { font-size:13px; font-weight:600; color:#212529; }
+  .pr-entry-date { font-size:11px; color:#6c757d; font-weight:500; }
+  .pr-entry-org { font-size:12px; color:#495057; font-style:italic; margin-bottom:5px; }
+  .pr-entry-desc { font-size:11.5px; color:#495057; line-height:1.7; }
+  .pr-entry-tech { font-size:11px; color:#6c757d; margin:3px 0 5px; }
+  .pr-entry-link { font-size:11px; color:#0d6efd; text-decoration:none; display:block; margin-bottom:5px; }
+  .pr-cert { margin-bottom:10px; }
+  .pr-cert-name { font-size:12px; font-weight:600; color:#212529; }
+  .pr-cert-meta { font-size:11px; color:#6c757d; }
+</style>
+<div class="prof-resume">
+  <aside class="pr-sidebar">
+    ${photo ? `<div class="pr-photo">${photo}</div>` : ''}
+    ${contactItems ? `<div class="pr-sidebar-section"><div class="pr-section-title">Contact</div>${contactItems}</div>` : ''}
+    ${techSkills ? `<div class="pr-sidebar-section"><div class="pr-section-title">Tech Skills</div>${techSkills}</div>` : ''}
+    ${softSkills ? `<div class="pr-sidebar-section"><div class="pr-section-title">Soft Skills</div>${softSkills}</div>` : ''}
+    ${languages ? `<div class="pr-sidebar-section"><div class="pr-section-title">Languages</div>${languages}</div>` : ''}
+    ${certifications ? `<div class="pr-sidebar-section"><div class="pr-section-title">Certifications</div>${certifications}</div>` : ''}
+  </aside>
+  <main class="pr-main">
+    <div class="pr-name">${name}</div>
+    ${data.jobTitle ? `<div class="pr-job-title">${data.jobTitle}</div>` : ''}
+    ${data.summary ? `<div class="pr-summary">${data.summary}</div>` : ''}
+    ${experience ? `<div class="pr-section-title">Professional Experience</div>${experience}` : ''}
+    ${education ? `<div class="pr-section-title">Education</div>${education}` : ''}
+    ${projects ? `<div class="pr-section-title">Projects</div>${projects}` : ''}
+  </main>
+</div>`;
+  },
+
+  /* ============================================================
+     TEMPLATE 6: TECH
+     Dark mode style, code-like aesthetic, high contrast
+     ============================================================ */
+  tech(data) {
+    const name = `${data.firstName || ''} ${data.lastName || ''}`.trim() || 'YourName';
+    const initials = ((data.firstName || '')[0] || '') + ((data.lastName || '')[0] || '');
+
+    const contactItems = [
+      data.email && `<span><span class="th-key">email:</span> "${data.email}"</span>`,
+      data.phone && `<span><span class="th-key">phone:</span> "${data.phone}"</span>`,
+      data.location && `<span><span class="th-key">loc:</span> "${data.location}"</span>`,
+      data.linkedin && `<span><span class="th-key">in:</span> "${data.linkedin.replace('https://', '')}"</span>`,
+      data.website && `<span><span class="th-key">web:</span> "${data.website.replace('https://', '')}"</span>`
+    ].filter(Boolean).join('<span class="th-comma">,</span> ');
+
+    const techSkills = (data.techSkills || []).map(s =>
+      `<span class="th-skill">${s}</span>`).join('');
+    const softSkills = (data.softSkills || []).map(s =>
+      `<span class="th-skill soft">${s}</span>`).join('');
+
+    const experience = (data.experience || []).map(e => `
+      <div class="th-entry">
+        <div class="th-entry-header">
+          <div class="th-entry-title">&gt; ${e.role || 'Role'} <span class="th-at">@</span> <span class="th-org">${e.company || ''}</span></div>
+          <div class="th-entry-date">[${e.startDate || ''} - ${e.current ? 'Present' : e.endDate || ''}]</div>
+        </div>
+        ${e.description ? `<div class="th-entry-desc">${e.description.replace(/\n/g, '<br/>')}</div>` : ''}
+      </div>`).join('');
+
+    const education = (data.education || []).map(e => `
+      <div class="th-entry">
+        <div class="th-entry-header">
+          <div class="th-entry-title">&gt; ${e.degree || 'Degree'} <span class="th-at">@</span> <span class="th-org">${e.school || ''}</span></div>
+          <div class="th-entry-date">[${e.year || ''}]</div>
+        </div>
+        ${e.gpa ? `<div class="th-entry-desc">GPA: ${e.gpa}</div>` : ''}
+      </div>`).join('');
+
+    const projects = (data.projects || []).map(p => `
+      <div class="th-entry">
+        <div class="th-entry-header">
+          <div class="th-entry-title">&gt; ${p.title || 'Project'}</div>
+          ${p.url ? `<a href="${p.url}" class="th-entry-link">${p.url.replace('https://', '')}</a>` : ''}
+        </div>
+        ${p.tech ? `<div class="th-tech-stack">// stack: ${p.tech}</div>` : ''}
+        ${p.description ? `<div class="th-entry-desc">${p.description}</div>` : ''}
+      </div>`).join('');
+
+    return `
+<style>
+  .tech-resume { display:flex; flex-direction:column; min-height:1123px; font-family:'Fira Code', 'Consolas', monospace; font-size:12px; line-height:1.6; color:#e2e8f0; background:#0f172a; padding:40px; }
+  .th-header { border-bottom:2px dashed #334155; padding-bottom:20px; margin-bottom:25px; }
+  .th-name { font-size:32px; font-weight:700; color:#38bdf8; letter-spacing:-1px; margin-bottom:10px; }
+  .th-name::before { content:"~ $ "; color:#10b981; }
+  .th-job-title { font-size:14px; color:#94a3b8; margin-bottom:15px; }
+  .th-contact { font-size:11px; color:#cbd5e1; display:flex; flex-wrap:wrap; gap:5px; background:#1e293b; padding:10px; border-radius:6px; }
+  .th-key { color:#f472b6; }
+  .th-comma { color:#cbd5e1; }
+  .th-section-title { font-size:16px; font-weight:700; color:#10b981; margin-bottom:15px; text-transform:lowercase; }
+  .th-section-title::before { content:"## "; color:#64748b; }
+  .th-section { margin-bottom:30px; }
+  .th-summary { font-size:12px; color:#cbd5e1; line-height:1.8; background:#1e293b; padding:15px; border-left:4px solid #38bdf8; }
+  .th-entry { margin-bottom:20px; }
+  .th-entry-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
+  .th-entry-title { font-size:13px; font-weight:700; color:#e2e8f0; }
+  .th-at { color:#f472b6; }
+  .th-org { color:#38bdf8; }
+  .th-entry-date { font-size:11px; color:#64748b; }
+  .th-entry-desc { font-size:11.5px; color:#94a3b8; line-height:1.7; padding-left:15px; border-left:1px solid #334155; }
+  .th-tech-stack { font-size:11px; color:#10b981; padding-left:15px; margin-bottom:5px; }
+  .th-entry-link { color:#38bdf8; text-decoration:underline; font-size:11px; }
+  .th-skills { display:flex; flex-wrap:wrap; gap:8px; padding-left:15px; }
+  .th-skill { background:#1e293b; color:#38bdf8; padding:4px 8px; border-radius:4px; font-size:11px; border:1px solid #334155; }
+  .th-skill.soft { color:#f472b6; }
+</style>
+<div class="tech-resume">
+  <header class="th-header">
+    <div class="th-name">${name}</div>
+    ${data.jobTitle ? `<div class="th-job-title">// ${data.jobTitle}</div>` : ''}
+    ${contactItems ? `<div class="th-contact">{ ${contactItems} }</div>` : ''}
+  </header>
+  ${data.summary ? `<section class="th-section"><div class="th-section-title">summary</div><div class="th-summary">${data.summary}</div></section>` : ''}
+  ${techSkills || softSkills ? `<section class="th-section"><div class="th-section-title">skills</div><div class="th-skills">${techSkills}${softSkills}</div></section>` : ''}
+  ${experience ? `<section class="th-section"><div class="th-section-title">experience</div>${experience}</section>` : ''}
+  ${projects ? `<section class="th-section"><div class="th-section-title">projects</div>${projects}</section>` : ''}
+  ${education ? `<section class="th-section"><div class="th-section-title">education</div>${education}</section>` : ''}
+</div>`;
   }
 
 }; // end ResumeTemplates

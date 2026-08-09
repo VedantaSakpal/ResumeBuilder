@@ -922,6 +922,9 @@
     const z = state.previewZoom;
     previewPaper.style.transform = `scale(${z})`;
     previewPaper.style.transformOrigin = 'top center';
+    previewPaper.style.marginBottom = `-${1123 * (1 - z)}px`;
+    previewPaper.style.marginLeft = `-${(794 * (1 - z)) / 2}px`;
+    previewPaper.style.marginRight = `-${(794 * (1 - z)) / 2}px`;
     // Adjust the viewport height to account for the scaled paper
     const paperH = 1123 * z;
     previewPaper.parentElement.style.minHeight = (paperH + 32) + 'px';
