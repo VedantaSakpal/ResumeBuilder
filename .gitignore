@@ -16,6 +16,5 @@ node_modules/
 .env
 .env.*
 
-chatgpt.js
 
-GEMINI_API_KEY     = "AIzaSyA3G26QZsZFjBWpc270Y0WA5D3b4N_mFTY";
+config.js

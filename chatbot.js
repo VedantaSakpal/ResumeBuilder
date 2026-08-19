@@ -7,7 +7,7 @@
   "use strict";
 
   /* Configuration */
-  var GEMINI_API_KEY     = "AIzaSyA3G26QZsZFjBWpc270Y0WA5D3b4N_mFTY";
+  var GEMINI_API_KEY     = (window.ENV && window.ENV.GEMINI_API_KEY) || "";
   /* Preferred model: gemini-2.5-flash-lite (fast, free-tier quota available).
      Fallback: gemini-2.5-flash (heavier but also works with this key).        */
   var GEMINI_MODEL       = "gemini-2.5-flash-lite";
